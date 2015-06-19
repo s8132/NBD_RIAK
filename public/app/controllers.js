@@ -289,8 +289,103 @@ appControllers.controller("LinkWalkingCtrl", ['$scope', 'LinkWalkingRequest', 'R
     };
 }]);
 
-appControllers.controller("BucketKeyCtrl", ['$scope', function($scope) {
+appControllers.controller("BucketKeyCtrl", ['$scope', 'BucketKeyRequest', 'toaster', 'RiakDB', function($scope, BucketKeyRequest, toaster, RiakDB) {
+    $scope.creates = BucketKeyRequest.getCreates();
+    $scope.resultOneBucketKey = null;
+    $scope.resultOneUrl = null;
+    $scope.resultTwoBucketKey = null;
+    $scope.resultTwoUrl = null;
 
+    $scope.executeCreate = function(create){
+        var urls = create.url.split("/");
+        $scope.createPromise = RiakDB.createBucketKey({key: urls[urls.length-1]}, create.body).$promise.then(function(data){
+            toaster.pop("success", "Tworzenie " + urls[urls.length-1], "Zapytanie wykonane");
+        }, function(error){
+            toaster.pop("error", "Tworzenie " + urls[urls.length-1], "Błąd wykonania");
+        });
+    };
+
+    $scope.executeOneBucketKey = function(){
+        $scope.oneLinkPromise = RiakDB.getJSON({bucket: 'song', key: 'song1'}).$promise.then(function(data){
+            toaster.pop('success', 'Krok 1.', 'Zapytanie wykonane');
+            var bucket = data.nextSong.bucket,
+                key = data.nextSong.key;
+            $scope.oneLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(da){
+                toaster.pop('success', 'Krok 2.', 'Zapytanie wykonane');
+                $scope.resultOneBucketKey = da;
+            }, function(error){
+                toaster.pop('error', 'Krok 2.', 'Błąd wykonania');
+            });
+        }, function(error){
+            toaster.pop('error', 'Krok 1.', 'Błąd wykonania');
+        });
+    };
+
+    $scope.executeOneUrl = function(){
+        $scope.oneLinkPromise = RiakDB.getJSON({bucket: 'song', key: 'song1'}).$promise.then(function(data){
+            toaster.pop('success', 'Krok 1.', 'Zapytanie wykonane');
+            var urls = data.artist.url.split('/');
+            var bucket = urls[urls.length-3],
+                key = urls[urls.length-1];
+            $scope.oneLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(da){
+                toaster.pop('success', 'Krok 2.', 'Zapytanie wykonane');
+                $scope.resultOneUrl = da;
+            }, function(error){
+                toaster.pop('error', 'Krok 2.', 'Błąd wykonania');
+            });
+        }, function(error){
+            toaster.pop('error', 'Krok 1.', 'Błąd wykonania');
+        });
+    };
+
+    $scope.executeTwoBucketKey = function(){
+        $scope.twoLinkPromise = RiakDB.getJSON({bucket: 'song', key: 'song1'}).$promise.then(function(data){
+            toaster.pop('success', 'Krok 1.', 'Zapytanie wykonane');
+            var bucket = data.nextSong.bucket,
+                key = data.nextSong.key;
+            $scope.twoLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(da){
+                toaster.pop('success', 'Krok 2.', 'Zapytanie wykonane');
+                var bucket = da.nextSong.bucket,
+                    key = da.nextSong.key;
+                $scope.twoLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(d){
+                    toaster.pop('success', 'Krok 3.', 'Zapytanie wykonane');
+                    $scope.resultTwoBucketKey = d;
+                }, function(error){
+                    toaster.pop('error', 'Krok 3.', 'Błąd wykonania');
+                });
+            }, function(error){
+                toaster.pop('error', 'Krok 2.', 'Błąd wykonania');
+            });
+        }, function(error){
+            toaster.pop('error', 'Krok 1.', 'Błąd wykonania');
+        });
+    };
+
+    $scope.executeTwoUrl = function(){
+        $scope.twoLinkPromise = RiakDB.getJSON({bucket: 'song', key: 'song1'}).$promise.then(function(data){
+            toaster.pop('success', 'Krok 1.', 'Zapytanie wykonane');
+            var urls = data.nextSong.url.split('/');
+            var bucket = urls[urls.length-3],
+                key = urls[urls.length-1];
+            console.log(urls);)
+            $scope.twoLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(da){
+                toaster.pop('success', 'Krok 2.', 'Zapytanie wykonane');
+                var urls = da.artist.url.split('/');
+                var bucket = urls[urls.length-3],
+                    key = urls[urls.length-1];
+                $scope.twoLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(d){
+                    toaster.pop('success', 'Krok 3.', 'Zapytanie wykonane');
+                    $scope.resultTwoUrl = d;
+                }, function(error){
+                    toaster.pop('error', 'Krok 3.', 'Błąd wykonania');
+                });
+            }, function(error){
+                toaster.pop('error', 'Krok 2.', 'Błąd wykonania');
+            });
+        }, function(error){
+            toaster.pop('error', 'Krok 1.', 'Błąd wykonania');
+        });
+    };
 }]);
 
 appControllers.controller("ErrorCtrl", ['$scope', function($scope) {

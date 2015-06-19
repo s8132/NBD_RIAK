@@ -32,7 +32,9 @@ appService.factory('RiakDB', ['$resource', function($resource){
         'getOneLink3': {method: 'GET', url: '/riak/api/buckets/track/keys/track1/artist,_,1'},
         'getTwoLink1': {method: 'GET', url: '/riak/api/buckets/track/keys/track1/_,_,_/_,_,_'},
         'getTwoLink2': {method: 'GET', url: '/riak/api/buckets/track/keys/track1/_,_,_/_,next,_'},
-        'getTwoLink3': {method: 'GET', url: '/riak/api/buckets/track/keys/track1/_,_,_/artist,_,_'}
+        'getTwoLink3': {method: 'GET', url: '/riak/api/buckets/track/keys/track1/_,_,_/artist,_,_'},
+        'createBucketKey': {method: 'PUT', url: '/riak/api/buckets/song/keys/:key'},
+        'getJSON': {method: 'GET', url: '/riak/api/buckets/:bucket/keys/:key'}
     });
 }]);
 
@@ -115,6 +117,47 @@ appService.factory('LinkWalkingRequest', [function(){
         },
         getTwoLinkRequest: function(){
             return twoLinkRequest;
+        }
+    }
+}]);
+
+appService.factory('BucketKeyRequest', [function(){
+    var creates = [
+        {
+            id: 1, isOpen: false, label: "Song 1", method: 'PUT', url: '/buckets/song/keys/song1', body: {
+                name: "Song 1", year: 1996, length: 180321,
+                nextSong:{
+                    bucket: "song", key: "song2", url: "/buckets/song/keys/song2"
+                },
+                artist: {
+                    bucket: "artist", key: "artist1", url: "/buckets/artist/keys/artist1"
+                }
+            }
+        },
+        {
+            id: 2, isOpen: false, label: "Song 2", method: 'PUT', url: '/buckets/song/keys/song2', body: {
+                name: "Song 2", year: 1996, length: 180321,
+                nextSong:{
+                    bucket: "song", key: "song3", url: "/buckets/song/keys/song3"
+                },
+                artist: {
+                    bucket: "artist", key: "artist2", url: "/buckets/artist/keys/artist2"
+                }
+            }
+        },
+        {
+            id: 3, isOpen: false, label: "Song 3", method: 'PUT', url: '/buckets/song/keys/song3', body: {
+                name: "Song 3", year: 1996, length: 180321,
+                artist: {
+                    bucket: "artist", key: "artist3", url: "/buckets/artist/keys/artist3"
+                }
+            }
+        }
+    ];
+
+    return{
+        getCreates: function(){
+            return creates;
         }
     }
 }]);

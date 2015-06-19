@@ -1,3 +1,134 @@
 <div class="page-header">
     <h2>Bucket/key</h2>
 </div>
+<div>
+    <img src="images/linkWalking.png" style="display: block; margin: 0 auto;">
+</div>
+<br/>
+<div class="panel panel-default" ng-init="createPanel=false" cg-busy="{promise: createPromise}">
+    <div class="panel-heading">
+        <h4 class="panel-title" ng-click="createPanel=!createPanel" style="cursor:pointer;">
+            Tworzenie
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': createPanel, 'glyphicon-chevron-down': !createPanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="createPanel">
+        <h4>Zmieniamy nazwę z track na song, żeby nie było konfliktów z Link Walking.</h4>
+        <div class="panel panel-default" ng-repeat="create in creates">
+            <div class="panel-heading">
+                <h4 class="panel-title" ng-click="create.isOpen=!create.isOpen">
+                    {{create.label}}
+                    <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': createPanel.isOpen, 'glyphicon-chevron-down': !create.isOpen}"></i>
+                </h4>
+            </div>
+            <div class="panel-body" ng-show="create.isOpen">
+                <pre>{{create.method}} {{create.url}}</pre>
+                <h4>Treść</h4>
+                <pre>{{create.body|json}}</pre>
+                <a class="btn btn-primary btn-block" ng-click="executeCreate(create)">Wykonaj</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-init="oneLinkPanel=false" cg-busy="{promise: oneLinkPromise}">
+    <div class="panel-heading">
+        <h4 class="panel-title" ng-click="oneLinkPanel=!oneLinkPanel" style="cursor:pointer;">
+            Nawigacja po jednym "linku"
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': oneLinkPanel, 'glyphicon-chevron-down': !oneLinkPanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="oneLinkPanel">
+        <dl>
+            <dt>Krok 1.</dt>
+            <dd>Pobieramy json dla song1</dd>
+            <dt>Krok 2.</dt>
+            <dd>W json czytamy wartość dla pary bucket/key lub url wybranego obiektu (artist lub nextSong)</dd>
+            <dt>Krok 3.</dt>
+            <dd>Wykonujemy zapytanie z wybranymi wartościami</dd>
+        </dl>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Pobranie następnej piosenki (z wykorzystaniem bucket/key)</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a class="btn btn-primary btn-block" ng-click="executeOneBucketKey()">Wykonaj</a>
+                    </div>
+                    <div class="col-xs-8">
+                        <pre>{{resultOneBucketKey|json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Pobranie artysty (z wykorzystaniem url)</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a class="btn btn-primary btn-block" ng-click="executeOneUrl()">Wykonaj</a>
+                    </div>
+                    <div class="col-xs-8">
+                        <pre>{{resultOneUrl|json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default" ng-init="twoLinkPanel=false" cg-busy="{promise: twoLinkPromise}">
+    <div class="panel-heading">
+        <h4 class="panel-title" ng-click="twoLinkPanel=!twoLinkPanel" style="cursor:pointer;">
+            Nawigacja po dwóch "linkach"
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': twoLinkPanel, 'glyphicon-chevron-down': !twoLinkPanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="twoLinkPanel">
+        <dl>
+            <dt>Krok 1.</dt>
+            <dd>Pobieramy json dla song1</dd>
+            <dt>Krok 2.</dt>
+            <dd>W json czytamy wartość dla pary bucket/key lub url wybranego obiektu (artist lub nextSong)</dd>
+            <dt>Krok 3.</dt>
+            <dd>Wykonujemy zapytanie z wybranymi wartościami i czytam json</dd>
+            <dt>Krok 4.</dt>
+            <dd>W json czytamy wartość dla pary bucket/key lub url wybranego obiektu (artist lub nextSong)</dd>
+            <dt>Krok 5.</dt>
+            <dd>Wykonujemy zapytanie z wybranymi wartościami)</dd>
+        </dl>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Pobranie następnej piosenki (z wykorzystaniem bucket/key)</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a class="btn btn-primary btn-block" ng-click="executeTwoBucketKey()">Wykonaj</a>
+                    </div>
+                    <div class="col-xs-8">
+                        <pre>{{resultTwoBucketKey|json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Pobranie artysty (z wykorzystaniem url)</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <a class="btn btn-primary btn-block" ng-click="executeTwoUrl()">Wykonaj</a>
+                    </div>
+                    <div class="col-xs-8">
+                        <pre>{{resultTwoUrl|json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
