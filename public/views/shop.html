@@ -1,0 +1,17 @@
+<div class="page-header">
+    <h2>Sklep</h2>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-md-4" ng-repeat="product in products track by $index" >
+        <div class="thumbnail" >
+            <img ng-src="{{product.image}}" style="display: block; max-height: 240px; min-height: 240px; padding: 20px;">
+            <div class="caption">
+                <h3>{{product.name}}</h3>
+                <a class="btn btn-success btn-block" ng-click="addProductToCart(product)">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Dodaj do koszyka
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

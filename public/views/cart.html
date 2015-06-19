@@ -1,0 +1,45 @@
+<div cg-busy="{promise: loadPromise}">
+    <div class="page-header">
+        <h2>Koszyk</h2>
+    </div>
+    <div ng-if="tableParams!==null">
+        <table ng-table="tableParams" class="table table-striped">
+            <tr ng-repeat="cartItem in $data">
+                <td data-title="'Id'" sortable="'product.id'" style="vertical-align: middle; text-align: center;">
+                    {{cartItem.product.id}}
+                </td>
+                <td data-title="'Obrazek'" style="vertical-align: middle; text-align: center;">
+                    <img ng-src="{{cartItem.product.image}}" style="max-height: 50px;">
+                </td>
+                <td data-title="'Nazwa'" sortable="'product.name'" style="vertical-align: middle; text-align: center;">
+                    {{cartItem.product.name}}
+                </td>
+                <td data-title="'Ilość'" sortable="'count'" style="vertical-align: middle; text-align: center; max-width: 50px;">
+                    <input type="number" ng-model="cartItem.count" class="form-control">
+                </td>
+                <td data-title="'Akcje'">
+                    <a class="btn btn-danger btn-block" ng-click="removeItem($index)" style="vertical-align: middle;">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Usuń
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br/>
+    <a class="btn btn-success pull-right" ng-click="saveCart()">Zapisz koszyk</a>
+    <br/>
+    <br/>
+    <br/>
+    <div class="panel panel-default" ng-init="showJson=false">
+        <div class="panel-heading">
+            <h4 class="panel-title" ng-click="showJson=!showJson">
+                Podgląd źródła
+                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': showJson, 'glyphicon-chevron-down': !showJson}"></i>
+            </h4>
+        </div>
+        <div class="panel-body" ng-show="showJson">
+            <pre>{{cartItems|json}}</pre>
+        </div>
+    </div>
+</div>

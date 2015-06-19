@@ -1,0 +1,105 @@
+<div class="page-header">
+    <h2>Link walking <small>na przykładzie playlisty</small></h2>
+</div>
+<div>
+    <img src="images/linkWalking.png" style="display: block; margin: 0 auto;">
+</div>
+<br/>
+
+<div class="panel-default panel" ng-init="createPanel=false" cg-busy="{promise: promise}">
+    <div class="panel-heading" ng-click="createPanel=!createPanel">
+        <h4 class="panel-title" style="cursor: pointer;">
+            Tworzenie
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': createPanel, 'glyphicon-chevron-down': !createPanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="createPanel">
+        <div class="panel panel-default" ng-repeat="create in creates track by $index">
+            <div class="panel-heading">
+                <h4 class="panel-title" ng-click="create.isOpen=!create.isOpen" style="cursor: pointer;">
+                    {{create.label}}
+                    <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': create.isOpen, 'glyphicon-chevron-down': !create.isOpen}"></i>
+                </h4>
+            </div>
+            <div class="panel-body" ng-show="create.isOpen">
+                <pre>{{create.method}} {{create.url}}</pre>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <h4>Nagłówki</h4>
+                        <pre>{{create.headers|json}}</pre>
+                    </div>
+                    <div class="col-xs-3">
+                        <h4>Treść</h4>
+                        <pre>{{create.body|json}}</pre>
+                    </div>
+                </div>
+                <a class="btn btn-primary pull-right btn-block" ng-click="execute(create.id, create.body)">Utwórz</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-default panel" ng-init="navOnePanel=false" cg-busy="{promise: oneLinePromise}">
+    <div class="panel-heading" ng-click="navOnePanel=!navOnePanel">
+        <h4 class="panel-title" style="cursor: pointer;">
+            Nawigacja po jednym linku
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': navOnePanel, 'glyphicon-chevron-down': !navOnePanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="navOnePanel">
+        <div class="panel panel-default" ng-repeat="req in oneLinkRequest track by $index">
+            <div class="panel-heading">
+                <h4 class="panel-title" ng-click="req.isOpen=!req.isOpen" style="cursor: pointer;">
+                    {{req.label}}
+                    <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': req.isOpen, 'glyphicon-chevron-down': !req.isOpen}"></i>
+                </h4>
+            </div>
+            <div class="panel-body" ng-show="req.isOpen">
+                <pre>{{req.method}} {{req.url}}</pre>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h4>Wynik zapytania text</h4>
+                        <pre>{{req.result.text}}</pre>
+                    </div>
+                    <div class="col-xs-6">
+                        <h4>Wynik zapytania json</h4>
+                        <pre>{{req.result.json}}</pre>
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-block" ng-click="oneLinkExecute(req)">Wykonaj zapytanie</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel-default panel" ng-init="navTwoPanel=false">
+    <div class="panel-heading" ng-click="navTwoPanel=!navTwoPanel">
+        <h4 class="panel-title" style="cursor: pointer;">
+            Nawigacja po dwóch linkach
+            <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': navTwoPanel, 'glyphicon-chevron-down': !navTwoPanel}"></i>
+        </h4>
+    </div>
+    <div class="panel-body" ng-show="navTwoPanel">
+        <div class="panel panel-default" ng-repeat="req in twoLinkRequest track by $index">
+            <div class="panel-heading">
+                <h4 class="panel-title" ng-click="req.isOpen=!req.isOpen" style="cursor: pointer;">
+                    {{req.label}}
+                    <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': req.isOpen, 'glyphicon-chevron-down': !req.isOpen}"></i>
+                </h4>
+            </div>
+            <div class="panel-body" ng-show="req.isOpen">
+                <pre>{{req.method}} {{req.url}}</pre>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h4>Wynik zapytania text</h4>
+                        <pre>{{req.result.text}}</pre>
+                    </div>
+                    <div class="col-xs-6">
+                        <h4>Wynik zapytania json</h4>
+                        <pre>{{req.result.json}}</pre>
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-block" ng-click="twoLinkExecute(req)">Wykonaj zapytanie</a>
+            </div>
+        </div>
+    </div>
+</div>
+

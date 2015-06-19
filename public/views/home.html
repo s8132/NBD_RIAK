@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-xs-8">
+        <div class="page-header">
+            <h2>Informacje o projekcie</h2>
+        </div>
+        <p class="lead">
+            Projekt symuluje działanie koszyk przy pomocy wykorzystania bazy Riak. Z powodu, że nie ma możliwośći
+            instalacji Riaka na systemie operacyjnym Windows, przy tworzeniu skorzystałem z Dockera - <a href="https://registry.hub.docker.com/u/devdb/riak/">"DevDbRiak"</a>.
+            Oprócz angular.js musiałem użyć jeszcze node.js, poniewać występował problem z CORS. W tym wypadku node.js
+            służy tylko i wyłącznie do serwowania plików oraz jako proxy do HTTP API Riak.
+            <br/>
+            Za pomocą nazwy użytkownika (widocznej na górze) może sobie symulować sesję koszyka - inna nazwa użytkownika = inny koszyk.
+        </p>
+    </div>
+    <div class="col-xs-4">
+        <div class="panel panel-default" cg-busy="{promise: settingsSavePromise}">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ustawienie połączenia</h3>
+            </div>
+            <div class="panel-body">
+                <form ng-submit="saveSettings()">
+                    <div class="form-group">
+                        <label for="settingsURL">URL: </label>
+                        <input type="text" id="settingsURL" class="form-control" placeholder="Example: localhost" ng-model="settings.url">
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsUsername">Port: </label>
+                        <input type="number" id="settingsUsername" class="form-control" ng-model="settings.port">
+                    </div>
+
+                    <input type="submit" value="Zapisz" class="btn btn-success pull-right">
+                    <a class="btn btn-primary" ng-click="testConnection()">Testuj połączenie</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
