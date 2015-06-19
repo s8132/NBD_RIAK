@@ -367,7 +367,6 @@ appControllers.controller("BucketKeyCtrl", ['$scope', 'BucketKeyRequest', 'toast
             var urls = data.nextSong.url.split('/');
             var bucket = urls[urls.length-3],
                 key = urls[urls.length-1];
-            console.log(urls);)
             $scope.twoLinkPromise = RiakDB.getJSON({bucket: bucket, key: key}).$promise.then(function(da){
                 toaster.pop('success', 'Krok 2.', 'Zapytanie wykonane');
                 var urls = da.artist.url.split('/');
